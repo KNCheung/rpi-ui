@@ -5,20 +5,25 @@ import sys, os
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 sys.path.insert(0, os.path.realpath("./lib"))
 
+import click
+
 from main import Main
 
-if __name__ == "__main__":
-    # main = Main('/tmp/rpi-ui.pid')
+@click.command()
+@click.argument('command', nargs=1)
+def handler(command):
     main = Main()
-    if len(sys.argv) > 1:
-        if sys.argv[1] == 'start':
-            main.start()
-        elif sys.argv[1] == 'stop':
-            main.stop()
-        elif sys.argv[1] == 'restart':
-            main.restart()
-        else:
-            print("Arguments Error")
+    if command == 'start':
+        main.start()
+    elif command == 'stop':
+        main.stop()
+    elif command == 'restart':
+        main.restart()
+    elif command == 'foreground':
+        main.run()
     else:
-        print("Arguments Error")
+        print("unknow command {0}".format(command))
+
+if __name__ == "__main__":
+    handler()
 
