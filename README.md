@@ -1,1 +1,1 @@
-# rpi-ui
+# Raspberry Pi User Interface## Dependence+ Hardware    + Raspberry Pi 3 Model B    + Arduino Nano    + Joystick    + Display: LCD1602    + Temperature & Humidity Sensor: AM2302+ Software    + **System** Raspbian Jessie    + lcdproc
