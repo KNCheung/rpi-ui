@@ -27,7 +27,7 @@ def createLogFile():
 from main import Main
 
 @click.command()
-@click.argument('command', nargs=1)
+@click.argument('command', default='foreground', nargs=1)
 @click.option('--conf', '-c', default='/etc/rpi-ui.conf', help='Configure File')
 def handler(command, conf):
     print("using configure file={0}".format(conf))
@@ -47,6 +47,10 @@ def handler(command, conf):
         log.addHandler(logConsole)
         main = Main(conf)
         main.run()
+    elif command == 'status':
+        log.addHandler(logConsole)
+        main = Main(conf)
+        main.is_running()
     else:
         print("unknow command {0}".format(command))
 

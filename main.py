@@ -27,11 +27,7 @@ class Main(Daemon):
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
         self.config = configparser.SafeConfigParser()
-        self.config.read(configureFile)
-
-        self.loadDataSources()
-        self.loadScreens()
-
+        self.config.read(configureFile) 
 
     def loadDataSources(self):
         log.info("start loading data sources")
@@ -53,6 +49,9 @@ class Main(Daemon):
                 self.pool.append(screens[scr](self.lcd, self.lcdLock, self.config, self.dataSources))
 
     def run(self):
+        self.loadDataSources()
+        self.loadScreens()
+
         self.timer.start()
         while True:
             time.sleep(15)
