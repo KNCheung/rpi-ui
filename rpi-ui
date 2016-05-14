@@ -8,20 +8,44 @@ sys.path.insert(0, os.path.realpath(path))
 
 import click
 
+import logging
+log = logging.getLogger()
+log.setLevel(logging.NOTSET)
+
+formatter = logging.Formatter(fmt='%(asctime)s %(filename)s[T:%(threadName)s,L%(lineno)d] %(levelname)s %(message)s', datefmt='%y%m%d-%H%M%S')
+
+logConsole = logging.StreamHandler()
+logConsole.setLevel(logging.DEBUG)
+logConsole.setFormatter(formatter)
+
+def createLogFile():
+    logFile = logging.FileHandler(filename='/tmp/rpi-ui.log', mode='w')
+    logFile.setLevel(logging.WARNING)
+    logFile.setFormatter(formatter) 
+    return logFile
+
 from main import Main
 
 @click.command()
 @click.argument('command', nargs=1)
 @click.option('--conf', '-c', default='/etc/rpi-ui.conf', help='Configure File')
 def handler(command, conf):
-    main = Main(conf)
+    print("using configure file={0}".format(conf))
     if command == 'start':
+        log.addHandler(createLogFile())
+        main = Main(conf)
         main.start()
     elif command == 'stop':
+        log.addHandler(createLogFile())
+        main = Main(conf)
         main.stop()
     elif command == 'restart':
+        log.addHandler(createLogFile())
+        main = Main(conf)
         main.restart()
     elif command == 'foreground':
+        log.addHandler(logConsole)
+        main = Main(conf)
         main.run()
     else:
         print("unknow command {0}".format(command))

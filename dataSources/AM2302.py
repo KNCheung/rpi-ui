@@ -2,6 +2,7 @@
 #encoding:utf8
 
 import logging
+log = logging.getLogger()
 
 from .DataSourceBase import DataSourceBase
 
@@ -19,14 +20,14 @@ class AM2302(DataSourceBase):
             self.pin = 17
 
     def fetch(self): 
-        logging.debug("Start reading AM2302")
+        log.info("Start reading AM2302")
         try:
             h, t = dht.read_retry(dht.AM2302, self.pin, retries=4, delay_seconds=5)
         except RuntimeError:
             h, t = (None, None)
         try:
-            logging.debug("AM2302: h={0}, t={1}".format(int(h), int(t)))
+            log.info("AM2302: h={0}, t={1}".format(int(h), int(t)))
         except Exception:
-            logging.error("failed to read AM2302")
+            log.error("failed to read AM2302")
         return (h, t)
         

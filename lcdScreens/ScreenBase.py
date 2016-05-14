@@ -1,13 +1,15 @@
 #!/usr/bin/python
 
 import logging
+log = logging.getLogger()
+
 import threading
 import uuid
 
 class ScreenBase(threading.Thread):
     def __init__(self, lcd, lcdLock, config, dataSources):
         threading.Thread.__init__(self)
-        logging.debug("loading screen {0}".format(self.__class__.__name__))
+        log.info("loading screen {0}".format(self.__class__.__name__))
         self.lcd = lcd
         self.lcdLock = lcdLock
         self.configFile = config
@@ -17,6 +19,15 @@ class ScreenBase(threading.Thread):
         self.screen = self.lcd.add_screen(self.name)
 
         self.createWidgets()
+
+    def createWidgets(self):
+        self.screen.set_heartbeat('off')
+        try:
+            self.duration = self.config.get(self.name, 'duration')
+        except Exception:
+            log.warning("{0}'s duration not found".format(self.name))
+            self.duration = 5
+        self.screen.set_duration(self.duration)
 
     def config(self, option, default=None):
         try:

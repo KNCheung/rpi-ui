@@ -2,6 +2,8 @@
 #encoding: utf8
 
 import logging
+log = logging.getLogger()
+
 import threading
 import time
 
@@ -13,7 +15,7 @@ def _async(f):
 class Timer(threading.Thread):
     def __init__(self):
         super(Timer, self).__init__()
-        logging.debug('create timer')
+        log.info('create timer')
         self._target = {}
         self.setDaemon(True)
         self.lock = threading.Lock()
@@ -29,14 +31,14 @@ class Timer(threading.Thread):
                 t = time.time()
                 for target in self._target.keys():
                     if t >= self._target[target]:
+                        log.info("update {0}".format(target))
                         _async(target.update)
-                        self._target[target] += target.interval
-
+                        self._target[target] += target.interval 
             while time.time() > end:
                 end += 1
 
     def attach(self, name, interval): 
-        logging.debug("attach {0} to timer".format(name))
+        log.info("attach {0} to timer".format(name))
         _async(name.update)
         self.lock.acquire()
         self._target[name] = interval + time.time()
@@ -54,7 +56,7 @@ class Timer(threading.Thread):
 
 class DataSourceBase(object):
     def __init__(self, config, timer):
-        logging.debug("loading data source {0}".format(self.__class__.__name__))
+        log.info("loading data source {0}".format(self.__class__.__name__))
         self.config = config
         self.timer = timer
         self.occupied = False
@@ -86,13 +88,13 @@ class DataSourceBase(object):
         self.timer.detach(self)
 
     def attach(self, observer, recall):
-        logging.debug("attach {0} to data source {1}".format(observer, self.__class__.__name__))
+        log.info("attach {0} to data source {1}".format(observer, self.__class__.__name__))
         self._observers[observer] = recall
         if len(self._observers) == 1:
             self.start()
 
     def detach(self, observer):
-        logging.debug("detach {0} from data source {1}".format(observer, self.__class__.__name__))
+        log.info("detach {0} from data source {1}".format(observer, self.__class__.__name__))
         try:
             del self._observers[observer]
         except KeyError:

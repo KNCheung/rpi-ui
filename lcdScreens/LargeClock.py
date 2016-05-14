@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
 import logging
+log = logging.getLogger()
 
 from .ScreenBase import ScreenBase
 
 class LargeClock(ScreenBase):
     def createWidgets(self):
+        super(LargeClock, self).createWidgets()
+        
         self.pin = self.intConfig('sensorPort', 18)
         
         self.h1 = self.screen.add_number_widget("h1", x=1, value=0)

@@ -23,6 +23,6 @@ screens = {}
 from .LargeClock import LargeClock
 screens['LargeClock'] = LargeClock
 
-# from CPUStatus import CPUStatus
-# screens['CPUStatus'] = CPUStatus
+from CPUStatus import CPUStatus
+screens['CPUStatus'] = CPUStatus
 

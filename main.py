@@ -5,12 +5,7 @@ import sys, os
 import threading
 
 import logging
-logging.basicConfig(level=logging.NOTSET,
-                    format='%(asctime)s %(filename)s[T:%(thread)d,L%(lineno)d] %(levelname)s %(message)s',
-                    datefmt='%y%m%d-%H%M%S',
-                    filename='/tmp/rpi-ui.log',
-                    filemode='w')
-
+log = logging.getLogger()
 
 from daemon import Daemon
 import time
@@ -39,15 +34,16 @@ class Main(Daemon):
 
 
     def loadDataSources(self):
-        logging.debug("start loading data sources")
+        log.info("start loading data sources")
         self.timer = Timer()
+        self.timer.name = 'Timer'
         self.dataSources = {}
         for ds in dataSources.keys():
             self.dataSources[ds] = dataSources[ds](self.config, self.timer)
 
 
     def loadScreens(self):
-        logging.debug("start loading screens")
+        log.info("start loading screens")
         self.pool = []
         self.lcd = Server(debug=False)
         self.lcd.start_session()
@@ -59,5 +55,6 @@ class Main(Daemon):
     def run(self):
         self.timer.start()
         while True:
-            time.sleep(100)
+            time.sleep(15)
+            log.info("heartbeat. num of threads={0}".format(threading.active_count()))
 
