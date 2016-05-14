@@ -5,7 +5,12 @@ from .DataSourceBase import DataSourceBase
 from datetime import datetime
 
 class DateTime(DataSourceBase):
-    interval = 1
+    def configure(self):
+        try:
+            self.interval = int(self.config.get('DateTime', 'interval'))
+        except:
+            self.interval = 1
+
     def fetch(self):
         return datetime.now()
 

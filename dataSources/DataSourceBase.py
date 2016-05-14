@@ -60,6 +60,10 @@ class DataSourceBase(object):
         self.occupied = False
         self._observers = {}
         self._data = None
+        self.configure()
+
+    def configure(self):
+        pass
 
     def fetch(self):
         raise NotImplementedError
@@ -68,7 +72,6 @@ class DataSourceBase(object):
         return self._data
 
     def update(self):
-        logging.debug("update data source {0}".format(self.__class__.__name__))
         self._data = self.fetch()
         self.notify()
 

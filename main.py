@@ -5,7 +5,7 @@ import sys, os
 import threading
 
 import logging
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.NOTSET,
                     format='%(asctime)s %(filename)s[T:%(thread)d,L%(lineno)d] %(levelname)s %(message)s',
                     datefmt='%y%m%d-%H%M%S',
                     filename='/tmp/rpi-ui.log',
