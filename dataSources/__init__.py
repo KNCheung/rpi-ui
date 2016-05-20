@@ -14,3 +14,6 @@ dataSources['CPUUsage'] = CPUUsage
 from .CPUTemp import CPUTemp
 dataSources['CPUTemp'] = CPUTemp
 
+from .Wlan0_IP import Wlan0_IP
+dataSources['Wlan0_IP'] = Wlan0_IP
+

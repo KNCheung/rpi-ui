@@ -11,8 +11,8 @@ screens = {}
 # from ClassicClock import ClassicClock
 # screens['ClassicClock'] = ClassicClock
 
-# from IPAddr import IPAddr
-# screens['IPAddr'] = IPAddr
+from IPAddr import IPAddr
+screens['IPAddr'] = IPAddr
 
 # from Notify import Notify
 # screens['Notify'] = Notify
