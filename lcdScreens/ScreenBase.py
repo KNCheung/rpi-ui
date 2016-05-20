@@ -12,7 +12,7 @@ class ScreenBase(threading.Thread):
         log.info("loading screen {0}".format(self.__class__.__name__))
         self.lcd = lcd
         self.lcdLock = lcdLock
-        self.configFile = config
+        self.config = config
         self.dataSources = dataSources
 
         self.name = str(self.__class__.__name__).split('.')[-1]
@@ -23,24 +23,25 @@ class ScreenBase(threading.Thread):
     def createWidgets(self):
         self.screen.set_heartbeat('off')
         try:
-            self.duration = self.config.get(self.name, 'duration')
-        except Exception:
+            self.duration = int(self.config.get(self.name, 'duration'))
+        except Exception as e:
             log.warning("{0}'s duration not found".format(self.name))
+            log.error(e)
             self.duration = 5
         self.screen.set_duration(self.duration)
 
-    def config(self, option, default=None):
+    def configGet(self, option, default=None):
         try:
             return self.config.get(self.name, option)
         except:
             return default
 
-    def intConfig(self, option, default=0):
-        return int(self.config(option, default))
+    def intConfigGet(self, option, default=0):
+        return int(self.configGet(option, default))
 
-    def floatConfig(self, option, default=0.0):
-        return float(self.config(option, default))
+    def floatConfigGet(self, option, default=0.0):
+        return float(self.configGet(option, default))
 
-    def boolConfig(self, option, default=False):
-        tmp = self.config(option, 'False')
+    def boolConfigGet(self, option, default=False):
+        tmp = self.configGet(option, 'False')
         return tmp.lower() in ['1', 'true', 'on']

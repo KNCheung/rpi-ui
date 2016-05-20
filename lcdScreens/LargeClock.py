@@ -12,7 +12,7 @@ class LargeClock(ScreenBase):
     def createWidgets(self):
         super(LargeClock, self).createWidgets()
         
-        self.pin = self.intConfig('sensorPort', 18)
+        self.pin = self.intConfigGet('sensorPort', 18)
         
         self.h1 = self.screen.add_number_widget("h1", x=1, value=0)
         self.h2 = self.screen.add_number_widget("h2", x=4, value=0)
