@@ -12,7 +12,7 @@ import logging
 log = logging.getLogger()
 log.setLevel(logging.NOTSET)
 
-formatter = logging.Formatter(fmt='%(asctime)s %(filename)s[T:%(threadName)s,L%(lineno)d] %(levelname)s %(message)s', datefmt='%y%m%d-%H%M%S')
+formatter = logging.Formatter(fmt='%(asctime)s %(levelname)s %(filename)s[T:%(threadName)s,L%(lineno)d] %(message)s', datefmt='%y%m%d-%H%M%S')
 
 logConsole = logging.StreamHandler()
 logConsole.setLevel(logging.DEBUG)

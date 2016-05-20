@@ -7,9 +7,10 @@ log = logging.getLogger()
 import threading
 import time
 
-def _async(f):
+def _async(f, name=''):
     tmp = threading.Thread(target=f)
     tmp.setDaemon(True)
+    tmp.name += ' ' + name
     tmp.start()
 
 class Timer(threading.Thread):
@@ -31,8 +32,7 @@ class Timer(threading.Thread):
                 t = time.time()
                 for target in self._target.keys():
                     if t >= self._target[target]:
-                        log.info("update {0}".format(target))
-                        _async(target.update)
+                        _async(target.update, target.__class__.__name__)
                         self._target[target] += target.interval 
             while time.time() > end:
                 end += 1
@@ -79,7 +79,7 @@ class DataSourceBase(object):
 
     def notify(self):
         for observer in self._observers.keys():
-            _async(lambda : self._observers[observer](self._data))
+            _async(lambda : self._observers[observer](self._data), "->{0}".format(observer))
 
     def start(self):
         self.timer.attach(self, self.interval)

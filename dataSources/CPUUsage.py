@@ -16,6 +16,5 @@ class CPUUsage(DataSourceBase):
             self.interval = 5
 
     def fetch(self): 
-        log.info("reading CPU usage")
         return psutil.cpu_percent(percpu=True)
         

@@ -32,12 +32,17 @@ class CPUStatus(ScreenBase):
         self.dataSources['CPUTemp'].attach('CPUStatus', self.updateTemp)
 
 
+
     def updateCPU(self, data):
-        for i in range(4):
-            self.cpu[i].set_length(int(round(data[i] / 10.0)))
+        if self.lcdLock.acquire(False):
+            for i in range(4):
+                self.cpu[i].set_length(int(round(data[i] / 10.0)))
+            self.lcdLock.release() 
 
 
     def updateTemp(self, data):
+        self.lcdLock.acquire()
         self.temp.set_text("{0:02d}{1}".format(data, self.deg))
+        self.lcdLock.release()
 
 

@@ -6,6 +6,9 @@ log = logging.getLogger()
 from .ScreenBase import ScreenBase
 
 class LargeClock(ScreenBase):
+    lastHour = -1
+    lastMinute = -1
+
     def createWidgets(self):
         super(LargeClock, self).createWidgets()
         
@@ -26,13 +29,17 @@ class LargeClock(ScreenBase):
         self.dataSources['AM2302'].attach('LargeClock', self.updateTemp)
 
     def updateTime(self, data):
-        self.lcdLock.acquire()
-        self.h1.set_value(data.hour / 10)
-        self.h2.set_value(data.hour % 10)
+        if self.lcdLock.acquire(False):
+            if self.lastHour != data.hour:
+                self.h1.set_value(data.hour / 10)
+                self.h2.set_value(data.hour % 10)
+                self.lastHour = data.hour
 
-        self.m1.set_value(data.minute / 10)
-        self.m2.set_value(data.minute % 10)
-        self.lcdLock.release()
+            if self.lastMinute != data.minute:
+                self.m1.set_value(data.minute / 10)
+                self.m2.set_value(data.minute % 10)
+                self.lastMinute = data.minute
+            self.lcdLock.release()
 
     def updateTemp(self, data):
         if data[0]:

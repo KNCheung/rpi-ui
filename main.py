@@ -54,6 +54,9 @@ class Main(Daemon):
 
         self.timer.start()
         while True:
-            time.sleep(15)
+            time.sleep(5)
             log.info("heartbeat. num of threads={0}".format(threading.active_count()))
+            ts = threading.enumerate()
+            for t in ts:
+                log.debug("thread: {0}".format(t.name))
 
