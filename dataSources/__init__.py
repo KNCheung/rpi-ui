@@ -17,3 +17,6 @@ dataSources['CPUTemp'] = CPUTemp
 from .Wlan0_IP import Wlan0_IP
 dataSources['Wlan0_IP'] = Wlan0_IP
 
+from .Elec import Elec
+dataSources['Elec'] = Elec
+

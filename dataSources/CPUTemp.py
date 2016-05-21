@@ -21,8 +21,8 @@ class CPUTemp(DataSourceBase):
         try:
             temp_raw = subprocess.check_output(["vcgencmd", "measure_temp"]).decode("utf8")
             temp = re.findall(r"[\d\.]+", temp_raw)[0]
-        except Exception:
-            log.error("unknown error occured")
+        except Exception as e:
+            log.error(e)
             return 0
         return int(round(float(temp)))
 

@@ -26,3 +26,5 @@ screens['LargeClock'] = LargeClock
 from CPUStatus import CPUStatus
 screens['CPUStatus'] = CPUStatus
 
+from ElecDisp import ElecDisp
+screens['ElecDisp'] = ElecDisp
