@@ -20,6 +20,9 @@ class ScreenBase(threading.Thread):
 
         self.createWidgets()
 
+    def setBacklight(self, state):
+        self.screen.set_backlight(state)
+
     def createWidgets(self):
         self.screen.set_heartbeat('off')
         try:
