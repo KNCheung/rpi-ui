@@ -7,6 +7,7 @@ import threading
 import logging
 log = logging.getLogger()
 
+from pymongo import MongoClient
 from daemon import Daemon
 import time
 
@@ -19,6 +20,7 @@ from lcdScreens import screens
 from lcdproc.server import Server
 
 from dataSources import dataSources, Timer
+from dataRecorder import initDataRecorder
 
 class Main(Daemon):
     def __init__(self, configureFile):
@@ -51,6 +53,14 @@ class Main(Daemon):
     def run(self):
         self.loadDataSources()
         self.loadScreens()
+
+        try:
+            log.info("Connecting to database")
+            db = MongoClient().rpi
+            log.info("Connected")
+            initDataRecorder(db, self.dataSources)
+        except Exception as err:
+            log.error(err) 
 
         self.timer.start()
         while True:
