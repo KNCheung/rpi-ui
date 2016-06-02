@@ -62,9 +62,21 @@ class Main(Daemon):
         except Exception as err:
             log.error(err) 
 
+        lightOn = True
         self.timer.start()
         while True:
             time.sleep(5)
+            t = self.dataSources['CdSSensor'].fetch()
+            log.debug("CdS sensor: " + str(t))
+            if (t < 0.07) and (not lightOn) :
+                for s in self.pool:
+                    s.setBacklight('on')
+                lightOn = True
+            elif (t >= 0.07) and lightOn:
+                for s in self.pool:
+                    s.setBacklight('off')
+                lightOn = False
+
             log.info("heartbeat. num of threads={0}".format(threading.active_count()))
             ts = threading.enumerate()
             for t in ts:

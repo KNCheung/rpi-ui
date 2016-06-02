@@ -20,3 +20,6 @@ dataSources['Wlan0_IP'] = Wlan0_IP
 from .Elec import Elec
 dataSources['Elec'] = Elec
 
+from .CdSSensor import CdSSensor
+dataSources['CdSSensor'] = CdSSensor
+
